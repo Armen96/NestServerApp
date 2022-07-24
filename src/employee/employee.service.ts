@@ -4,10 +4,11 @@ import { UpdateEmployeeInput } from './dto/update-employee.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { Repository } from 'typeorm';
+import { ProjectService } from '../project/project.service';
 
 @Injectable()
 export class EmployeeService {
-  constructor(@InjectRepository(Employee) private employeeRepository: Repository<Employee>) {}
+  constructor(@InjectRepository(Employee) private employeeRepository: Repository<Employee>, private projectService: ProjectService) {}
 
   create(createEmployeeInput: CreateEmployeeInput) {
     const employee = this.employeeRepository.create(createEmployeeInput);
@@ -15,7 +16,9 @@ export class EmployeeService {
   }
 
   findAll() {
-    return this.employeeRepository.find();
+    return this.employeeRepository.find({
+      relations: ['project']
+    });
   }
 
   findOne(id: string) {
@@ -26,7 +29,11 @@ export class EmployeeService {
     return this.employeeRepository.update(id, updateEmployeeInput);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+  remove(id: string) {
+    return this.employeeRepository.delete(id);
+  }
+
+  getProject(id: string) {
+    return this.projectService.findOne(id)
   }
 }

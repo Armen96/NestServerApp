@@ -1,8 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { EmployeeService } from './employee.service';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeInput } from './dto/create-employee.input';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
+import { Project } from '../project/entities/project.entity';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
@@ -23,13 +24,20 @@ export class EmployeeResolver {
     return this.employeeService.findOne(id);
   }
 
-  @Mutation(() => Employee)
+  @Mutation(() => Employee, {name: 'updateEmployee'})
   updateEmployee(@Args('updateEmployeeInput') updateEmployeeInput: UpdateEmployeeInput) {
     return this.employeeService.update(updateEmployeeInput.id, updateEmployeeInput);
   }
 
-  @Mutation(() => Employee)
-  removeEmployee(@Args('id', { type: () => Int }) id: number) {
-    return this.employeeService.remove(id);
+  @Mutation(() => Employee, {name: 'removeEmployee'})
+  async removeEmployee(@Args('id', { type: () => String }) id: string) {
+    await this.employeeService.remove(id);
+
+    return { id };
+  }
+
+  @ResolveField(() => Project)
+  project(@Parent() employee: Employee) {
+    return this.employeeService.getProject(employee.projectId)
   }
 }

@@ -13,4 +13,7 @@ export class CreateEmployeeInput {
 
   @Field({ nullable: true })
   city: string;
+
+  @Field()
+  projectId: string;
 }

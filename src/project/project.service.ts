@@ -15,7 +15,9 @@ export class ProjectService {
   }
 
   findAll() {
-    return this.projectRepository.find();
+    return this.projectRepository.find({
+      relations: ['employees']
+    });
   }
 
   findOne(id: string) {
@@ -26,7 +28,7 @@ export class ProjectService {
     return this.projectRepository.update(id, updateProjectInput)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  remove(id: string) {
+    return this.projectRepository.delete(id);
   }
 }

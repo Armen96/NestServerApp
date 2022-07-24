@@ -17,4 +17,7 @@ export class UpdateEmployeeInput extends PartialType(CreateEmployeeInput) {
 
   @Field({ nullable: true })
   city: string;
+
+  @Field()
+  projectId: string;
 }
