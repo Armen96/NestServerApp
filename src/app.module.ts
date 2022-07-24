@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { EmployeeModule } from './employee/employee.module';
+import { EmployeeModule } from './modules/employee/employee.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Employee } from './employee/entities/employee.entity';
-import { ProjectModule } from './project/project.module';
-import { Project } from './project/entities/project.entity';
+import { Employee } from './modules/employee/entities/employee.entity';
+import { ProjectModule } from './modules/project/project.module';
+import { Project } from './modules/project/entities/project.entity';
+import { StudentsModule } from './modules/students/students.module';
+import { Student } from './modules/students/entities/student.entity';
 
 @Module({
   imports: [
@@ -24,12 +24,13 @@ import { Project } from './project/entities/project.entity';
       username: 'postgres',
       password: 'root',
       database: 'nest-test-employee',
-      entities: [Employee, Project],
+      entities: [Employee, Project, Student],
       synchronize: true,
     }),
     ProjectModule,
+    StudentsModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
