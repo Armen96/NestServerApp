@@ -9,11 +9,12 @@ import {
   ParseUUIDPipe,
   // Req,
   // Res,
-  ParseIntPipe, HttpException, HttpStatus,
+  ParseIntPipe, HttpException, HttpStatus, UsePipes, ValidationPipe,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { CreateFakeDto } from './dto/create-fake.dto';
 // import { Request, Response} from 'express';
 
 @Controller('students')
@@ -30,23 +31,6 @@ export class StudentsController {
     return this.studentsService.findAll();
   }
 
-  @Get('fake')
-  findFakeStudent() { // @Req() req: Request, @Res() res: Response
-    // Use express req and res -> res.send(401)
-    return {id: 'test', name: 'test'};
-  }
-
-  @Get('fake/:fakeId')
-  findFakeStudentWithParam(@Param('fakeId', ParseIntPipe) fakeId: number) { // @Req() req: Request, @Res() res: Response
-    // Use express req and res -> res.send(401)
-    return {id: 'test', name: 'test', fake_id: fakeId};
-  }
-
-  @Get('error')
-  errorHandler() {
-    return new HttpException('Customer not Found', HttpStatus.NOT_FOUND)
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.studentsService.findOne(id);
@@ -60,5 +44,28 @@ export class StudentsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.studentsService.remove(id);
+  }
+
+  @Get('fake')
+  findFakeStudent() { // @Req() req: Request, @Res() res: Response
+    // Use express req and res -> res.send(401)
+    return {id: 'test', name: 'test'};
+  }
+
+  @Get('fake/:fakeId')
+  findFakeStudentWithParam(@Param('fakeId', ParseIntPipe) fakeId: number) { // @Req() req: Request, @Res() res: Response
+    // Use express req and res -> res.send(401)
+    return {id: 'test', name: 'test', fake_id: fakeId};
+  }
+
+  @Post('/fake')
+  @UsePipes(ValidationPipe)
+  createFake(@Body() fake: CreateFakeDto) {
+    return {...fake};
+  }
+
+  @Get('error')
+  errorHandler() {
+    return new HttpException('Customer not Found', HttpStatus.NOT_FOUND)
   }
 }
