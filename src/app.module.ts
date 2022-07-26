@@ -9,6 +9,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { Project } from './modules/project/entities/project.entity';
 import { StudentsModule } from './modules/students/students.module';
 import { Student } from './modules/students/entities/student.entity';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { Student } from './modules/students/entities/student.entity';
       synchronize: true,
     }),
     ProjectModule,
-    StudentsModule
+    StudentsModule,
+    UsersModule
   ],
   controllers: [],
   providers: [],
