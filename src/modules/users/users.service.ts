@@ -4,9 +4,9 @@ import { UserInterface } from './types';
 @Injectable()
 export class UsersService {
   private users: UserInterface[] = [
-    { username: "John", password: '123456' },
-    { username: "Marco", password: 'asdasd' },
-    { username: "Bolcman", password: '789456' },
+    { id: 1, username: "John", password: '123456' },
+    { id: 2, username: "Marco", password: 'asdasd' },
+    { id: 3, username: "Bolcman", password: '789456' },
   ];
 
   getUsers(): UserInterface[] {
@@ -15,5 +15,9 @@ export class UsersService {
 
   getUserByUserName(name: string): UserInterface {
     return this.users.find(i => i.username === name)
+  }
+
+  getUserById(id: number): UserInterface {
+    return this.users.find(i => i.id === id)
   }
 }
